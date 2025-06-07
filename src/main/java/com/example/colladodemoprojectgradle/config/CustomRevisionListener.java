@@ -1,6 +1,6 @@
 package com.example.colladodemoprojectgradle.config;
 
-import com.example.colladodemoprojectgradle.entities.audit.Revision;
+import com.example.colladodemoprojectgradle.model.audit.Revision;
 import org.hibernate.envers.RevisionListener;
 
 public class CustomRevisionListener implements RevisionListener {
