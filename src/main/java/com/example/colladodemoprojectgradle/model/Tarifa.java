@@ -3,6 +3,7 @@ package com.example.colladodemoprojectgradle.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "tarifas")
@@ -10,6 +11,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
 public class Tarifa extends Base {
 
     @Column(unique = true, nullable = false)

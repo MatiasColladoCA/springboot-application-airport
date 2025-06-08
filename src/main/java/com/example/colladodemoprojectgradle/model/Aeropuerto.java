@@ -2,6 +2,7 @@ package com.example.colladodemoprojectgradle.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +13,9 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
 public class Aeropuerto extends Base {
-    @Column(nullable = false, unique = true)
+    @Column(name = "nombre", nullable = false, unique = true)
     private String nombreAeropuerto;
 
     @ManyToOne

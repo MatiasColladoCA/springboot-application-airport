@@ -4,24 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-//@Entity
-//@Table(name = "persona")
-//@PrimaryKeyJoinColumn(name = "persona_id") // Para herencia JOINED
-//@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Persona extends Base {
+@Audited
+public abstract class Persona extends Base {
+
+    private Long id;
     @Column(nullable = false, unique = true)
     private String dniPersona;
 
@@ -30,14 +22,6 @@ public class Persona extends Base {
 
     @Column(nullable = false)
     private String apellidoPersona;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-            name = "persona_tarjetas",
-            joinColumns = @JoinColumn(name = "persona_id"),
-            inverseJoinColumns = @JoinColumn(name = "tarjeta_id")
-    )
-    private List<Tarjeta> tarjetas = new ArrayList<>();
 }
 
 

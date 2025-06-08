@@ -22,9 +22,9 @@ public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, Long> implement
     }
 
     @Override
-    public Optional<Usuario> findByEmail(String email) throws Exception {
+    public Optional<Usuario> findByNumero(int numero) throws Exception {
         try {
-            return usuarioRepository.findByCorreoElectronicoUsuario(email);
+            return usuarioRepository.findByNumeroUsuario(numero);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

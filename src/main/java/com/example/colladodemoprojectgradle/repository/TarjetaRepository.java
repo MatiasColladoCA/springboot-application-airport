@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface TarjetaRepository extends BaseRepository<Tarjeta, Long> {
 
-    List<Tarjeta> findByPersonaId(Long personaId);
+    List<Tarjeta> findByUsuarioId(Long usuarioId);
 
     List<Tarjeta> findByTipoTarjeta(TipoTarjeta tipo);
 }

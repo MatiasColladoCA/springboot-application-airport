@@ -3,7 +3,7 @@ package com.example.colladodemoprojectgradle.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Table;
+//import org.hibernate.annotations.Table;
 import org.hibernate.envers.Audited;
 
 import java.io.Serializable;

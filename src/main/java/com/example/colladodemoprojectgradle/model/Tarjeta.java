@@ -3,13 +3,15 @@ package com.example.colladodemoprojectgradle.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
-@Table(name = "tarjetas")
+@Table(name = "tarjeta")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
 public class Tarjeta extends Base {
     @Column(unique = true, nullable = false)
     private String numeroTarjeta;
@@ -18,6 +20,6 @@ public class Tarjeta extends Base {
     private TipoTarjeta tipoTarjeta;
 
     @ManyToOne
-    @JoinColumn(name = "persona_id", nullable = false)
-    private Persona persona;
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }

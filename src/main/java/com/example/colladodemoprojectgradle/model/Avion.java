@@ -2,6 +2,7 @@ package com.example.colladodemoprojectgradle.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
 public class Avion extends Base implements Especificacion {
     @Column(unique = true, nullable = false)
     private String numeroAvion;

@@ -8,5 +8,5 @@ import com.example.colladodemoprojectgradle.model.Usuario;
 import java.util.Optional;
 
 public interface UsuarioService extends BaseService<Usuario, Long> {
-    Optional<Usuario> findByEmail(String email) throws Exception;
+    Optional<Usuario> findByNumero(int numero) throws Exception;
 }

@@ -1,10 +1,9 @@
 package com.example.colladodemoprojectgradle.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "piloto")
@@ -12,7 +11,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
 public class Piloto extends Persona {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private String numeroPiloto;
 }

@@ -1,6 +1,7 @@
 package com.example.colladodemoprojectgradle.model;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "asientos")
@@ -8,6 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Audited
 public class Asiento extends Base {
 
     private int filaAsiento;

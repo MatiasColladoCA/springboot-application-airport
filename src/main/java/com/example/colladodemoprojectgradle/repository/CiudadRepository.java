@@ -15,6 +15,9 @@ import java.util.List;
 public interface CiudadRepository extends BaseRepository<Ciudad, Long> {
 
     @Query("SELECT c FROM Ciudad c WHERE c.nombreCiudad LIKE %:filtro%")
+    Page<Ciudad> search(@Param("filtro") String filtro, Pageable pageable);
+
+    @Query("SELECT c FROM Ciudad c WHERE c.nombreCiudad LIKE %:filtro%")
     List<Ciudad> search(@Param("filtro") String filtro);
 
     @Query(value = "SELECT * FROM ciudades WHERE nombre_ciudad ILIKE %:filtro%",

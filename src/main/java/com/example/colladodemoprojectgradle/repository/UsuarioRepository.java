@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends BaseRepository<Usuario, Long> {
 
-    Optional<Usuario> findByCorreoElectronicoUsuario(String email);
+    Optional<Usuario> findByNumeroUsuario(String numero);
 
     @Query("SELECT u FROM Usuario u WHERE u.numeroUsuario = :numeroUsuario")
-    Optional<Usuario> findByNumeroUsuario(@Param("numeroUsuario") String numeroUsuario);
+    Optional<Usuario> findByNumeroUsuario(@Param("numeroUsuario") int numeroUsuario);
 }
