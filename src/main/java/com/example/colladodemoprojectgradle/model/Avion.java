@@ -1,7 +1,5 @@
 package com.example.colladodemoprojectgradle.model;
 
-package com.example.vuelos.model;
-
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -13,9 +13,10 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "persona")
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Entity
+//@Table(name = "persona")
+//@PrimaryKeyJoinColumn(name = "persona_id") // Para herencia JOINED
+//@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor

@@ -2,7 +2,7 @@ package com.example.colladodemoprojectgradle.service;
 
 import com.example.colladodemoprojectgradle.model.Persona;
 import com.example.colladodemoprojectgradle.repository.BaseRepository;
-import com.example.colladodemoprojectgradle.repository.PersonaRepository;
+import com.example.colladodemoprojectgradle.repository.XPersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,12 +14,34 @@ import java.util.List;
 public class XPersonaServiceImpl extends BaseServiceImpl<Persona, Long> implements XPersonaService {
 
     @Autowired //Ayuda a acceder a los metodos que incluyen la interfaz de PersonaRepository
-    private PersonaRepository personaRepository;
+    private XPersonaRepository personaRepository;
 
-    public XPersonaServiceImpl(BaseRepository<Persona, Long> baseRepository, PersonaRepository personaRepository) {
+    public XPersonaServiceImpl(BaseRepository<Persona, Long> baseRepository, XPersonaRepository personaRepository) {
         super(baseRepository);
         this.personaRepository = personaRepository;
     }
+
+    @Override
+    public List<Persona> search(String filtro) throws Exception {
+        try {
+            List<Persona> personas = personaRepository.findByNombreContainingOrApellidoContaining(filtro, filtro);
+            return personas;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+
+    }@Override
+    public Page<Persona> search(String filtro, Pageable pageable) throws Exception {
+        try {
+            Page<Persona> personas = personaRepository.searchNativo(filtro, pageable);
+            return personas;
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+}
+
+
 //
 //    @Override
 //    public List<Persona> findAll() throws Exception {
@@ -45,23 +67,3 @@ public class XPersonaServiceImpl extends BaseServiceImpl<Persona, Long> implemen
 //    public boolean delete(Long aLong) throws Exception {
 //        return false;
 //    }
-
-    @Override
-    public List<Persona> search(String filtro) throws Exception {
-        try {
-            List<Persona> personas = personaRepository.findByNombreContainingOrApellidoContaining(filtro, filtro);
-            return personas;
-        }catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
-
-    }@Override
-    public Page<Persona> search(String filtro, Pageable pageable) throws Exception {
-        try {
-            Page<Persona> personas = personaRepository.searchNativo(filtro, pageable);
-            return personas;
-        }catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
-    }
-}

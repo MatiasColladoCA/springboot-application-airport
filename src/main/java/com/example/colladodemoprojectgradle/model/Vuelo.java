@@ -17,7 +17,10 @@ public class Vuelo extends Base {
     @Column(unique = true, nullable = false)
     private String numeroVuelo;
 
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime salida;
+
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime destino;
 
     @ManyToOne
