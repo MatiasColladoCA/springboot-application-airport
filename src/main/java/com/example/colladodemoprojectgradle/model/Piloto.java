@@ -13,8 +13,8 @@ import org.hibernate.envers.Audited;
 @AllArgsConstructor
 @Audited
 public class Piloto extends Persona {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private String numeroPiloto;
 }

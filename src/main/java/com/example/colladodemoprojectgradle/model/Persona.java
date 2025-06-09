@@ -13,7 +13,8 @@ import org.hibernate.envers.Audited;
 @Audited
 public abstract class Persona extends Base {
 
-    private Long id;
+//    @Column(nullable = false)
+//    private Long id;
     @Column(nullable = false, unique = true)
     private String dniPersona;
 

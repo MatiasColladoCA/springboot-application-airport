@@ -20,6 +20,7 @@ public class Consulta extends Base {
     private LocalDateTime fecha;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "numero_usuario", referencedColumnName = "numeroUsuario", nullable = false)
     private Usuario usuario;
+
 }

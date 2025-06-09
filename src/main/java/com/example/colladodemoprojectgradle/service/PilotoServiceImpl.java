@@ -1,24 +1,18 @@
 package com.example.colladodemoprojectgradle.service;
 
 import com.example.colladodemoprojectgradle.model.Piloto;
+import com.example.colladodemoprojectgradle.repository.BaseRepository;
 import com.example.colladodemoprojectgradle.repository.PilotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class PilotoServiceImpl extends BaseServiceImpl<Piloto, Long> implements PilotoService {
-    private final PilotoRepository repository;
-
     @Autowired
-    public PilotoServiceImpl(PilotoRepository repository) {
-        super(repository);
-        this.repository = repository;
-    }
+    private PilotoRepository pilotoRepository;
 
-    @Override
-    public Optional<Piloto> findByNumeroPiloto(String numeroPiloto) throws Exception {
-        return repository.findByNumeroPiloto(numeroPiloto);
+    public PilotoServiceImpl(BaseRepository<Piloto, Long> baseRepository, PilotoRepository pilotoRepository) {
+        super(baseRepository);
+        this.pilotoRepository = pilotoRepository;
     }
 }

@@ -16,8 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @Audited
 public class Usuario extends Persona{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private String numeroUsuario;
 
