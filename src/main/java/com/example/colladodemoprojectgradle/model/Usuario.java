@@ -1,6 +1,7 @@
 package com.example.colladodemoprojectgradle.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -27,9 +28,11 @@ public class Usuario extends Persona{
     private String correoElectronicoUsuario;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Reserva> reservas;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Consulta> consultas;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

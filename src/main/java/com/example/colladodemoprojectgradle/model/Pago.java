@@ -1,5 +1,8 @@
 package com.example.colladodemoprojectgradle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -17,5 +20,6 @@ public class Pago extends Base {
     private double cantidadPago;
 
     @OneToOne(mappedBy = "pago")
+    @JsonBackReference
     private Reserva reserva;
 }

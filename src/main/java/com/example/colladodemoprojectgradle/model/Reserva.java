@@ -1,5 +1,6 @@
 package com.example.colladodemoprojectgradle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -25,5 +26,6 @@ public class Reserva extends Base {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference
     private Usuario usuario;
 }

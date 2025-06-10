@@ -1,6 +1,7 @@
 package com.example.colladodemoprojectgradle.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -28,10 +29,12 @@ public class Vuelo extends Base {
 
     @ManyToOne
     @JoinColumn(name = "avion_id", nullable = false)
+    @JsonIgnore  // O usar @JsonBackReference si necesitas mostrar datos del avión
     private Avion avion;
 
     @ManyToOne
     @JoinColumn(name = "aerolinea_id", nullable = false)
+    @JsonIgnore  // O usar @JsonBackReference si necesitas mostrar datos de aerolínea
     private Aerolinea aerolinea;
 
     @ManyToMany
@@ -40,10 +43,10 @@ public class Vuelo extends Base {
             joinColumns = @JoinColumn(name = "vuelo_id"),
             inverseJoinColumns = @JoinColumn(name = "aeropuerto_id")
     )
+    @JsonManagedReference
     private Set<Aeropuerto> aeropuertos;
-//    private Set<Aeropuerto> aeropuertos = new HashSet<>();
 
     @OneToMany(mappedBy = "vuelo", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @JsonManagedReference
     private Set<Tarifa> tarifas = new HashSet<>();
 }
