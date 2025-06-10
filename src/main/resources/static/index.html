@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SkyBooking - Reservas Aéreas</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* Contenedor general */
+        .container {
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Header y navegación */
+        header {
+            background: #34495e;
+            padding: 1rem 0;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s;
+            cursor: pointer;
+        }
+
+        nav ul li a.active,
+        nav ul li a:hover {
+            border-bottom: 2px solid #2980b9;
+            color: white;
+        }
+
+        /* Secciones */
+        section {
+            background: white;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(44, 62, 80, 0.1);
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .section-subtitle {
+            color: #7f8c8d;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+
+        /* Formulario de búsqueda */
+        form.search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .input-group {
+            flex: 1 1 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #34495e;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        select,
+        input[type="date"],
+        input[type="number"],
+        input[type="text"],
+        input[type="email"] {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus,
+        input:focus {
+            outline: none;
+            border-color: #2980b9;
+        }
+
+        button.search-btn {
+            background-color: #2980b9;
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 0.9rem 2.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            align-self: center;
+            margin-top: 0.5rem;
+        }
+
+        button.search-btn:hover {
+            background-color: #1c5980;
+        }
+
+        /* Botón de reserva */
+        button.reserve-btn {
+            background-color: #e74c3c;
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        button.reserve-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Lista de vuelos seleccionable */
+        .flights-select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .flights-select:focus {
+            outline: none;
+            border-color: #2980b9;
+        }
+
+        .flights-select option {
+            padding: 1rem;
+            font-size: 1rem;
+        }
+
+        /* Contenedor de resultados */
+        #resultsContainer {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        /* Información del vuelo seleccionado */
+        .flight-info {
+            background: #ecf0f1;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            border-left: 4px solid #2980b9;
+            display: none;
+        }
+
+        .flight-info h4 {
+            color: #2980b9;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .flight-info p {
+            margin: 0.25rem 0;
+            color: #34495e;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            form.search-form {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <h1>AvioncitoBonito</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#" class="nav-link active" data-section="search">Buscar Vuelos</a></li>
+            <li><a href="#" class="nav-link" data-section="booking">Datos de Reserva</a></li>
+            <li><a href="#" class="nav-link" data-section="reservations">Mis Reservas</a></li>
+            <li><a href="#" class="nav-link" data-section="profile">Mi Perfil</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+
+    <section id="search-section" class="active">
+        <div class="section-header">
+            <h2 class="section-title">Encuentra tu Vuelo Perfecto</h2>
+            <p class="section-subtitle">Explora destinos increíbles con las mejores ofertas</p>
+        </div>
+        <form class="search-form" id="search-form">
+            <div id="resultsContainer">
+                <label for="flights-select">Vuelos disponibles</label>
+                <select id="flights-select" class="flights-select">
+                    <option value="">Selecciona un vuelo...</option>
+                </select>
+
+                <div id="flight-info" class="flight-info">
+                    <h4>Detalles del vuelo seleccionado</h4>
+                    <p id="flight-details"></p>
+                </div>
+
+                <button type="button" id="reserve-btn" class="reserve-btn">HACER RESERVA</button>
+            </div>
+
+            <button type="submit" class="search-btn">Explorar Vuelos</button>
+        </form>
+    </section>
+
+    <section id="booking-section">
+        <div class="section-header">
+            <h2 class="section-title">Datos de Reserva</h2>
+            <p class="section-subtitle">Completa tus datos para confirmar la reserva</p>
+        </div>
+
+        <div id="selected-flight-info" class="flight-info" style="display: block; margin-bottom: 2rem;">
+            <h4>Vuelo seleccionado</h4>
+            <p id="booking-flight-details">No hay vuelo seleccionado</p>
+        </div>
+
+        <form class="search-form" id="booking-form">
+            <div class="input-group">
+                <label for="passenger-name">Nombre completo</label>
+                <input type="text" id="passenger-name" required placeholder="Ej: Juan Pérez" />
+            </div>
+            <div class="input-group">
+                <label for="passenger-email">Email</label>
+                <input type="email" id="passenger-email" required placeholder="juan@email.com" />
+            </div>
+            <div class="input-group">
+                <label for="passenger-phone">Teléfono</label>
+                <input type="text" id="passenger-phone" required placeholder="+54 9 11 1234-5678" />
+            </div>
+            <div class="input-group">
+                <label for="passenger-dni">DNI/Documento</label>
+                <input type="text" id="passenger-dni" required placeholder="12345678" />
+            </div>
+            <button type="submit" class="search-btn" style="background: #27ae60;">Confirmar Reserva</button>
+        </form>
+    </section>
+
+    <section id="reservations-section">
+        <div class="section-header">
+            <h2 class="section-title">Gestiona tus Reservas</h2>
+            <p class="section-subtitle">Consulta y administra todos tus vuelos reservados</p>
+        </div>
+        <div>
+            <label for="usuario-id">ID de Usuario</label>
+            <input type="number" id="usuario-id" placeholder="Ej: 12345" />
+            <button onclick="loadReservations()" class="search-btn" style="margin-top:0.5rem;">Consultar Reservas</button>
+        </div>
+        <div id="reservations-list" style="margin-top: 1.5rem;"></div>
+    </section>
+
+    <section id="profile-section">
+        <div class="section-header">
+            <h2 class="section-title">Mi Perfil</h2>
+            <p class="section-subtitle">Actualiza tus datos personales</p>
+        </div>
+        <form class="profile-form">
+            <div class="input-group" style="margin-bottom:1rem;">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" />
+            </div>
+            <div class="input-group" style="margin-bottom:1rem;">
+                <label for="email">Email</label>
+                <input type="email" id="email" />
+            </div>
+            <button type="submit" class="search-btn" style="background:#27ae60;">Guardar Cambios</button>
+        </form>
+    </section>
+
+</div>
+
+<script>
+    let selectedFlight = null;
+    let allFlights = [];
+
+    // Navegación entre secciones
+    function showSection(sectionName) {
+        // Ocultar todas las secciones
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // Mostrar la sección seleccionada
+        document.getElementById(sectionName + '-section').classList.add('active');
+
+        // Actualizar navegación
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+    }
+
+    // Event listeners para navegación
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = e.target.getAttribute('data-section');
+            showSection(section);
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("search-form");
+        const flightsSelect = document.getElementById("flights-select");
+        const flightInfo = document.getElementById("flight-info");
+        const flightDetails = document.getElementById("flight-details");
+        const reserveBtn = document.getElementById("reserve-btn");
+        const resultsContainer = document.getElementById("resultsContainer");//IMPORTANTE
+
+
+        // Manejar envío del formulario de búsqueda
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            try {
+                console.log("Buscando vuelos...");
+                const response = await fetch("http://localhost:9000/vuelos");
+
+                if (!response.ok) {
+                    throw new Error("Error en la respuesta del servidor");
+                }
+
+                const vuelos = await response.json();
+                allFlights = vuelos;
+                console.log("Vuelos obtenidos:", vuelos);
+
+                // Limpiar select
+                flightsSelect.innerHTML = '<option value="">Selecciona un vuelo...</option>';
+
+                // Agregar opciones al select
+                vuelos.forEach((vuelo, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${vuelo.numeroVuelo || vuelo.id} - ${vuelo.origen || 'N/A'} → ${vuelo.destino || 'N/A'}`;
+                    flightsSelect.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error("Error al cargar vuelos:", error);
+                flightsSelect.innerHTML = '<option value="">Error al cargar vuelos</option>';
+            }
+        });
+
+        // Manejar selección de vuelo
+        flightsSelect.addEventListener('change', (e) => {
+            const selectedIndex = e.target.value;
+
+            if (selectedIndex === "") {
+                // No hay selección
+                flightInfo.style.display = 'none';
+                reserveBtn.style.display = 'none';
+                selectedFlight = null;
+            } else {
+                // Hay selección
+                selectedFlight = allFlights[selectedIndex];
+
+                // Mostrar información del vuelo
+                flightDetails.innerHTML = `
+                        <strong>Vuelo:</strong> ${selectedFlight.numeroVuelo || selectedFlight.id}<br>
+                        <strong>Origen:</strong> ${selectedFlight.origen || 'N/A'}<br>
+                        <strong>Destino:</strong> ${selectedFlight.destino || 'N/A'}<br>
+                        <strong>Fecha:</strong> ${selectedFlight.fecha || 'N/A'}<br>
+                        <strong>Precio:</strong> ${selectedFlight.precio || 'Consultar'}
+                    `;
+
+                flightInfo.style.display = 'block';
+                reserveBtn.style.display = 'block';
+            }
+        });
+
+        // Manejar click en botón de reserva
+        reserveBtn.addEventListener('click', () => {
+            if (selectedFlight) {
+                // Actualizar información en la sección de reserva
+                const bookingFlightDetails = document.getElementById('booking-flight-details');
+                bookingFlightDetails.innerHTML = `
+                        <strong>Vuelo:</strong> ${selectedFlight.numeroVuelo || selectedFlight.id}<br>
+                        <strong>Origen:</strong> ${selectedFlight.origen || 'N/A'}<br>
+                        <strong>Destino:</strong> ${selectedFlight.destino || 'N/A'}<br>
+                        <strong>Fecha:</strong> ${selectedFlight.fecha || 'N/A'}<br>
+                        <strong>Precio:</strong> ${selectedFlight.precio || 'Consultar'}
+                    `;
+
+                // Cambiar a la pestaña de datos de reserva
+                showSection('booking');
+            }
+        });
+
+        // Manejar envío del formulario de reserva
+        const bookingForm = document.getElementById('booking-form');
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = {
+                flight: selectedFlight,
+                passenger: {
+                    name: document.getElementById('passenger-name').value,
+                    email: document.getElementById('passenger-email').value,
+                    phone: document.getElementById('passenger-phone').value,
+                    dni: document.getElementById('passenger-dni').value
+                }
+            };
+
+            console.log('Datos de reserva:', formData);
+            alert('Formulario de reserva completado. Datos listos para enviar al servidor.');
+        });
+    });
+
+    // Función para cargar reservas (placeholder)
+    function loadReservations() {
+        const userId = document.getElementById('usuario-id').value;
+        const reservationsList = document.getElementById('reservations-list');
+
+        if (!userId) {
+            reservationsList.innerHTML = '<p style="color: red;">Por favor ingresa un ID de usuario.</p>';
+            return;
+        }
+
+        // Placeholder - aquí iría la lógica para cargar reservas del servidor
+        reservationsList.innerHTML = '<p>Cargando reservas...</p>';
+
+        setTimeout(() => {
+            reservationsList.innerHTML = '<p>No se encontraron reservas para este usuario.</p>';
+        }, 1000);
+    }
+</script>
+</body>
+</html>

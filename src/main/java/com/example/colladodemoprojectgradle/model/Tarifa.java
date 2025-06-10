@@ -1,5 +1,6 @@
 package com.example.colladodemoprojectgradle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,6 +26,7 @@ public class Tarifa extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vuelo_id", nullable = false)
+    @JsonBackReference
     private Vuelo vuelo;
 }
 

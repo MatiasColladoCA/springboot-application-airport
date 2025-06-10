@@ -1,5 +1,7 @@
 package com.example.colladodemoprojectgradle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -19,5 +21,6 @@ public class Ciudad extends Base {
     private String nombreCiudad;
 
     @OneToMany(mappedBy = "ciudad", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Aeropuerto> aeropuertos = new ArrayList<>();
 }

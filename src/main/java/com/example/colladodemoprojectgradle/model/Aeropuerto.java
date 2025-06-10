@@ -1,5 +1,7 @@
 package com.example.colladodemoprojectgradle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -20,8 +22,10 @@ public class Aeropuerto extends Base {
 
     @ManyToOne
     @JoinColumn(name = "ciudad_id", nullable = false)
+    @JsonBackReference
     private Ciudad ciudad;
 
     @ManyToMany(mappedBy = "aeropuertos")
+    @JsonIgnore
     private Set<Vuelo> vuelos = new HashSet<>();
 }

@@ -1,5 +1,6 @@
 package com.example.colladodemoprojectgradle.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -19,6 +20,7 @@ public class Avion extends Base implements Especificacion {
     private String numeroAvion;
 
     @OneToMany(mappedBy = "avion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Asiento> asientos = new ArrayList<>();
 
     private String tipoTurbina;

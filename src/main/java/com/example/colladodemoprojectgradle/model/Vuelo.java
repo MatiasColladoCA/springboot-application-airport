@@ -1,5 +1,6 @@
 package com.example.colladodemoprojectgradle.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -43,5 +44,6 @@ public class Vuelo extends Base {
 //    private Set<Aeropuerto> aeropuertos = new HashSet<>();
 
     @OneToMany(mappedBy = "vuelo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Tarifa> tarifas = new HashSet<>();
 }

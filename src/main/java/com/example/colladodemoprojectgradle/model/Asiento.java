@@ -1,4 +1,5 @@
 package com.example.colladodemoprojectgradle.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -22,6 +23,7 @@ public class Asiento extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avion_id", nullable = false)
+    @JsonBackReference
     private Avion avion;
 
     private boolean ocupado = false;
