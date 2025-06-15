@@ -178,58 +178,24 @@ document.addEventListener("DOMContentLoaded", () => {
     bookingForm.addEventListener('submit', async(e) => {
         e.preventDefault();
 
-        // Generar número de reserva único
+        // Generar números únicos
+        const numeroUsuario = 'USR' + Date.now().toString().slice(-6);
         const numeroReserva = 'RES-' + Date.now().toString().slice(-6);
 
-        const formData = {
-            flight: selectedFlight,
-            usuario: {
-                id: 13123123,
-                dniPersona: document.getElementById('passenger-dni').value,
-                nombrePersona: document.getElementById('passenger-name').value,
-                apellidoPersona: "apellido_persona", // document.getElementById('passenger-lastname').value,
-                numeroUsuario: 123132131312,
-                contraseñaUsuario: '1234',
-                correoElectronicoUsuario: document.getElementById('passenger-email').value
-                // reservas: [
-                //     {
-                //         id: 1,
-                //         numeroReserva: "RES-001",
-                //         vuelo: {
-                //             id: selectedFlight.id,
-                //             numeroVuelo: "AR1134",
-                //             salida: selectedFlight.destino,
-                //             destino: selectedFlight.destino,
-                //             tarifas: [
-                //                 {
-                //                     id: 1,
-                //                     numeroTarifa: "TAR-ECO-001",
-                //                     impuestoTarifa: 50.0,
-                //                     precioTarifa: "1000",
-                //                     claseTarifa: "economy"
-                //                 }
-                //             ]
-                //         },
-                //         pago: {
-                //             id: 1,
-                //             numeroPago: "PAY-20231201-001",
-                //             cantidadPago: 299.99
-                //         }
-                //     }
-                // ],
-                // consultas: [
-                //     {
-                //         id: 1,
-                //         numeroConsulta: "CON-001",
-                //         fecha: "2023-11-01T10:00:00"
-                //     }
-                // ],
-                // tarjetas: []
-            }
+        // Crear objeto usuario según la estructura esperada por el backend
+        const usuarioData = {
+            dniPersona: document.getElementById('passenger-dni').value,
+            nombrePersona: document.getElementById('passenger-name').value,
+            apellidoPersona: document.getElementById('passenger-lastname').value, // Asegúrate de que este campo exista en tu HTML
+            numeroUsuario: numeroUsuario, // Debe ser string
+            contraseñaUsuario: '1234', // Considera generar una contraseña más segura
+            correoElectronicoUsuario: document.getElementById('passenger-email').value,
+            reservas: [], // Array vacío por ahora
+            consultas: [], // Array vacío por ahora
+            tarjetas: [] // Array vacío por ahora
         };
 
-        console.log('Datos de reserva:', formData);
-        alert('Formulario de reserva completado. Datos listos para enviar al servidor.');
+        console.log('Datos de usuario a enviar:', usuarioData);
 
         try {
             // Enviar datos al servidor
@@ -238,12 +204,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(usuarioData) // Enviar directamente usuarioData
             });
 
             if (response.ok) {
                 const result = await response.json();
-                alert(`¡Reserva confirmada! Número de reserva: ${numeroReserva}`);
+                console.log('Usuario creado:', result);
+
+                // Si necesitas crear la reserva después, hazlo aquí con el ID del usuario creado
+                // await crearReserva(result.id, selectedFlight, numeroReserva);
+
+                alert(`¡Usuario creado exitosamente! Número de usuario: ${numeroUsuario}`);
 
                 // Limpiar formulario
                 bookingForm.reset();
@@ -251,6 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Opcional: redirigir a la sección de reservas
                 showSection('reservations');
             } else {
+                const errorData = await response.text();
+                console.error('Error del servidor:', errorData);
                 throw new Error('Error al procesar la reserva');
             }
         } catch (error) {
@@ -260,8 +233,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Función para cargar reservas (placeholder)
-function loadReservations() {
+// Función para cargar reservas
+async function loadReservations() {
     const userId = document.getElementById('usuario-id').value;
     const reservationsList = document.getElementById('reservations-list');
 
@@ -270,10 +243,122 @@ function loadReservations() {
         return;
     }
 
-    // Placeholder - aquí iría la lógica para cargar reservas del servidor
+    // Mostrar mensaje de carga
     reservationsList.innerHTML = '<p>Cargando reservas...</p>';
 
-    setTimeout(() => {
-        reservationsList.innerHTML = '<p>No se encontraron reservas para este usuario.</p>';
-    }, 1000);
+    try {
+        // Obtener datos del usuario
+        const response = await fetch(`http://localhost:9000/usuarios/${userId}`);
+
+        if (!response.ok) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        const usuario = await response.json();
+
+        // Verificar si hay reservas
+        if (!usuario.reservas || usuario.reservas.length === 0) {
+            reservationsList.innerHTML = '<p>No se encontraron reservas para este usuario.</p>';
+            return;
+        }
+
+        // Crear el HTML para mostrar las reservas
+        reservationsList.innerHTML = `
+            <div class="reservations-container">
+                <h3>Reservas de ${usuario.nombrePersona} ${usuario.apellidoPersona}</h3>
+                
+                <label for="reservations-select">Reservas disponibles</label>
+                <select id="reservations-select" class="flights-select">
+                    <option value="">Selecciona una reserva...</option>
+                    ${usuario.reservas.map(reserva => `
+                        <option value="${reserva.id}">
+                            ${reserva.numeroReserva} - Vuelo ${reserva.vuelo.numeroVuelo}
+                        </option>
+                    `).join('')}
+                </select>
+
+                <div id="reservation-info" class="flight-info" style="display: none;">
+                    <h4>Detalles de la reserva</h4>
+                    <div id="reservation-details"></div>
+                </div>
+
+                <button type="button" id="cancel-reservation-btn" class="reserve-btn" style="display: none; background-color: #dc3545;">
+                    CANCELAR RESERVA
+                </button>
+            </div>
+        `;
+
+        // Agregar event listener al select
+        const reservationsSelect = document.getElementById('reservations-select');
+        const reservationInfo = document.getElementById('reservation-info');
+        const cancelBtn = document.getElementById('cancel-reservation-btn');
+        const reservationDetails = document.getElementById('reservation-details');
+
+        reservationsSelect.addEventListener('change', (e) => {
+            const selectedReservaId = parseInt(e.target.value);
+
+            if (!selectedReservaId) {
+                reservationInfo.style.display = 'none';
+                cancelBtn.style.display = 'none';
+                return;
+            }
+
+            // Encontrar la reserva seleccionada
+            const reserva = usuario.reservas.find(r => r.id === selectedReservaId);
+
+            if (reserva) {
+                // Formatear fechas
+                const salida = new Date(reserva.vuelo.salida);
+                const destino = new Date(reserva.vuelo.destino);
+
+                // Mostrar detalles
+                reservationDetails.innerHTML = `
+                    <p><strong>Número de Reserva:</strong> ${reserva.numeroReserva}</p>
+                    <p><strong>Vuelo:</strong> ${reserva.vuelo.numeroVuelo}</p>
+                    <p><strong>Salida:</strong> ${salida.toLocaleString('es-AR')}</p>
+                    <p><strong>Llegada:</strong> ${destino.toLocaleString('es-AR')}</p>
+                    ${reserva.vuelo.tarifas && reserva.vuelo.tarifas.length > 0 ? `
+                        <p><strong>Clase:</strong> ${reserva.vuelo.tarifas[0].claseTarifa}</p>
+                        <p><strong>Precio tarifa:</strong> $${reserva.vuelo.tarifas[0].precioTarifa}</p>
+                        <p><strong>Impuestos:</strong> $${reserva.vuelo.tarifas[0].impuestoTarifa}</p>
+                    ` : ''}
+                    ${reserva.pago ? `
+                        <p><strong>Total pagado:</strong> $${reserva.pago.cantidadPago}</p>
+                        <p><strong>Número de pago:</strong> ${reserva.pago.numeroPago}</p>
+                    ` : ''}
+                `;
+
+                reservationInfo.style.display = 'block';
+                cancelBtn.style.display = 'block';
+
+                // Guardar ID de reserva en el botón para uso posterior
+                cancelBtn.dataset.reservaId = reserva.id;
+            }
+        });
+
+        // Agregar funcionalidad al botón de cancelar (opcional)
+        cancelBtn.addEventListener('click', async () => {
+            const reservaId = cancelBtn.dataset.reservaId;
+
+            if (confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
+                try {
+                    // Aquí iría la lógica para cancelar la reserva
+                    // const response = await fetch(`http://localhost:9000/reservas/${reservaId}`, {
+                    //     method: 'DELETE'
+                    // });
+
+                    alert('Funcionalidad de cancelación no implementada aún');
+                    // Recargar las reservas
+                    // loadReservations();
+                } catch (error) {
+                    console.error('Error al cancelar reserva:', error);
+                    alert('Error al cancelar la reserva');
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error('Error al cargar reservas:', error);
+        reservationsList.innerHTML = `<p style="color: red;">Error al cargar reservas: ${error.message}</p>`;
+    }
 }
