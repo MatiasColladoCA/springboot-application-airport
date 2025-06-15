@@ -13,13 +13,13 @@ import org.hibernate.envers.Audited;
 @AllArgsConstructor
 @Audited
 public class Tarjeta extends Base {
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//, nulable = false)
     private String numeroTarjeta;
 
     @Enumerated(EnumType.STRING)
     private TipoTarjeta tipoTarjeta;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")//, nulable = false)
     private Usuario usuario;
 }

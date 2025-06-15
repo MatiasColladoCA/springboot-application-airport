@@ -22,7 +22,7 @@ import java.util.List;
 @Audited
 public class Aerolinea extends Base {
 
-    @Column(name = "nombre", nullable = false, unique = true, length = 100)
+    @Column(name = "nombre")//, nulable = false, unique = true, length = 100)
     private String nombreAerolinea;
 
     // Relación uno a muchos con Vuelo (opcional por ahora)

@@ -15,7 +15,7 @@ import org.hibernate.envers.Audited;
 @Audited
 public class Tarifa extends Base {
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//, nulable = false)
     private String numeroTarifa;
 
     private double impuestoTarifa;
@@ -25,7 +25,7 @@ public class Tarifa extends Base {
     private ClaseServicio claseTarifa;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vuelo_id", nullable = false)
+    @JoinColumn(name = "vuelo_id")//, nulable = false)
     @JsonBackReference
     private Vuelo vuelo;
 }

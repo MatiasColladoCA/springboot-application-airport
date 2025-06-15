@@ -16,13 +16,13 @@ public abstract class Persona extends Base {
 //    @Column(nullable = false)
 //    private Long id;
     @Column(nullable = false, unique = true)
-    private String dniPersona;
+    protected String dniPersona;
 
     @Column(nullable = false)
-    private String nombrePersona;
+    protected String nombrePersona;
 
     @Column(nullable = false)
-    private String apellidoPersona;
+    protected String apellidoPersona;
 }
 
 

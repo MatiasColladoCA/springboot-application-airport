@@ -183,23 +183,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const formData = {
             flight: selectedFlight,
-            passenger: {
-                dni: document.getElementById('passenger-dni').value,
-                name: document.getElementById('passenger-name').value,
-                lastname: document.getElementById('passenger-lastname').value,
-                password: '1234',
-                email: document.getElementById('passenger-email').value,
-                reservas:[
-                    {
-                        numeroReserva: numeroReserva,
-                        // Agregar aquí los datos del vuelo seleccionado
-                        vueloId: selectedFlight.id,
-                        origen: selectedFlight.origen,
-                        destino: selectedFlight.destino,
-                        fecha: selectedFlight.fecha,
-                        precio: selectedFlight.precio
-                    }
-                ]
+            usuario: {
+                id: 13123123,
+                dniPersona: document.getElementById('passenger-dni').value,
+                nombrePersona: document.getElementById('passenger-name').value,
+                apellidoPersona: "apellido_persona", // document.getElementById('passenger-lastname').value,
+                numeroUsuario: 123132131312,
+                contraseñaUsuario: '1234',
+                correoElectronicoUsuario: document.getElementById('passenger-email').value
+                // reservas: [
+                //     {
+                //         id: 1,
+                //         numeroReserva: "RES-001",
+                //         vuelo: {
+                //             id: selectedFlight.id,
+                //             numeroVuelo: "AR1134",
+                //             salida: selectedFlight.destino,
+                //             destino: selectedFlight.destino,
+                //             tarifas: [
+                //                 {
+                //                     id: 1,
+                //                     numeroTarifa: "TAR-ECO-001",
+                //                     impuestoTarifa: 50.0,
+                //                     precioTarifa: "1000",
+                //                     claseTarifa: "economy"
+                //                 }
+                //             ]
+                //         },
+                //         pago: {
+                //             id: 1,
+                //             numeroPago: "PAY-20231201-001",
+                //             cantidadPago: 299.99
+                //         }
+                //     }
+                // ],
+                // consultas: [
+                //     {
+                //         id: 1,
+                //         numeroConsulta: "CON-001",
+                //         fecha: "2023-11-01T10:00:00"
+                //     }
+                // ],
+                // tarjetas: []
             }
         };
 

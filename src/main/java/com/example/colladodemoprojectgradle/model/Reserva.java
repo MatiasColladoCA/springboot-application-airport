@@ -13,11 +13,11 @@ import org.hibernate.envers.Audited;
 @AllArgsConstructor
 @Audited
 public class Reserva extends Base {
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//, nulable = false)
     private String numeroReserva;
 
     @ManyToOne
-    @JoinColumn(name = "vuelo_id", nullable = false)
+    @JoinColumn(name = "vuelo_id")//, nulable = false)
     private Vuelo vuelo;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -25,7 +25,7 @@ public class Reserva extends Base {
     private Pago pago;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")//, nulable = false)
     @JsonBackReference
     private Usuario usuario;
 }

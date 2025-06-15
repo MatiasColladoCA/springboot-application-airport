@@ -22,7 +22,7 @@ public class Asiento extends Base {
     private ClaseServicio claseAsiento;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "avion_id", nullable = false)
+    @JoinColumn(name = "avion_id")//, nulable = false)
     @JsonBackReference
     private Avion avion;
 

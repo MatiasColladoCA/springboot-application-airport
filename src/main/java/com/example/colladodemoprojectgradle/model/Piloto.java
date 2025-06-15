@@ -15,6 +15,6 @@ import org.hibernate.envers.Audited;
 public class Piloto extends Persona {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//, nulable = false)
     private String numeroPiloto;
 }

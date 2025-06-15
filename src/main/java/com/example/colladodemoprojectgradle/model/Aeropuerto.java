@@ -17,12 +17,12 @@ import java.util.Set;
 @AllArgsConstructor
 @Audited
 public class Aeropuerto extends Base {
-    @Column(name = "nombre", nullable = false, unique = true)
+    @Column(name = "nombre")//, nulable = false, unique = true)
     private String nombreAeropuerto;
 
     @ManyToOne
-    @JoinColumn(name = "ciudad_id", nullable = false)
-    @JsonBackReference
+    @JoinColumn(name = "ciudad_id")//, nulable = false)
+    @JsonIgnore
     private Ciudad ciudad;
 
     @ManyToMany(mappedBy = "aeropuertos")

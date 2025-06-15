@@ -19,12 +19,12 @@ import java.util.List;
 public class Usuario extends Persona{
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//, nulable = false)
     private String numeroUsuario;
 
     private String contraseñaUsuario;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//, nulable = false)
     private String correoElectronicoUsuario;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,4 +42,6 @@ public class Usuario extends Persona{
             inverseJoinColumns = @JoinColumn(name = "tarjeta_id")
     )
     private List<Tarjeta> tarjetas = new ArrayList<>();
+
+
 }

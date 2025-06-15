@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Audited
 public class Vuelo extends Base {
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//)//, nulable = false)
     private String numeroVuelo;
 
     @Column(columnDefinition = "TIMESTAMP")
@@ -28,12 +28,12 @@ public class Vuelo extends Base {
     private LocalDateTime destino;
 
     @ManyToOne
-    @JoinColumn(name = "avion_id", nullable = false)
+    @JoinColumn(name = "avion_id")//, nulable = false)
     @JsonIgnore  // O usar @JsonBackReference si necesitas mostrar datos del avión
     private Avion avion;
 
     @ManyToOne
-    @JoinColumn(name = "aerolinea_id", nullable = false)
+    @JoinColumn(name = "aerolinea_id")//, nulable = false)
     @JsonIgnore  // O usar @JsonBackReference si necesitas mostrar datos de aerolínea
     private Aerolinea aerolinea;
 
@@ -43,7 +43,7 @@ public class Vuelo extends Base {
             joinColumns = @JoinColumn(name = "vuelo_id"),
             inverseJoinColumns = @JoinColumn(name = "aeropuerto_id")
     )
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Aeropuerto> aeropuertos;
 
     @OneToMany(mappedBy = "vuelo", cascade = CascadeType.ALL, orphanRemoval = true)

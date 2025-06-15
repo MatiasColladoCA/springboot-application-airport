@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Audited
 public class Avion extends Base implements Especificacion {
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)//, nulable = false)
     private String numeroAvion;
 
     @OneToMany(mappedBy = "avion", cascade = CascadeType.ALL, orphanRemoval = true)

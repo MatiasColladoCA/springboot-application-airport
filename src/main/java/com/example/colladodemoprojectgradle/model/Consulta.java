@@ -1,6 +1,6 @@
 package com.example.colladodemoprojectgradle.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -21,8 +21,8 @@ public class Consulta extends Base {
     private LocalDateTime fecha;
 
     @ManyToOne
-    @JoinColumn(name = "numero_usuario", referencedColumnName = "numeroUsuario", nullable = false)
-    @JsonManagedReference
+    @JoinColumn(name = "numero_usuario", referencedColumnName = "numeroUsuario")//, nulable = false)
+    @JsonBackReference
     private Usuario usuario;
 
 }
